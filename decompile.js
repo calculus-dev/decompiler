@@ -1,6 +1,6 @@
 import fs from "fs";
 
-const file = fs.readFileSync("YOUR_FILE_HERE.js").toString();
+const file = fs.readFileSync("./v0.0.4.js").toString();
 const classes = {};
 
 let attempt = !1;
@@ -34,21 +34,7 @@ let objects = [];
     }
     for (var t in classes) {
         let inputFile = classes[t];
-        let dependencies = [];
-        for (var e in inputFile) {
-            if (inputFile[e].includes("new ")) {
-                let tempFile = inputFile[e].split(/new ([^\s(]+)/);
-                let files = fs.readdirSync('data/').filter(file => file.endsWith('.js'));
-                if (files.includes(tempFile[1] + ".js")) {
-                    dependencies.push(tempFile[1]);
-                }
-            }
-        }
-        for (var e in dependencies) {
-            dependencies[e] = "import " + dependencies[e] + " from \"" + dependencies[e] + ".js\";\n";
-        }
-        dependencies = dependencies.filter((t, e) => dependencies.indexOf(t) == e);
-        fs.writeFileSync("data/" + t + ".js", dependencies.join("\n") + "\nexport default class {\n" + inputFile.join("\n"), err => { if (err) { throw err }})
+        fs.writeFileSync("data/" + t + ".js", "\nexport default class {\n" + inputFile.join("\n"), err => { if (err) { throw err }})
     }
     for (var t in classes) {
         let inputFile = classes[t];
